@@ -19,7 +19,9 @@ public class Handler
 
 
         try {
+            // =================================
             // Read and parse the client request
+            // =================================
             fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientRequest = fromClient.readLine();
             
@@ -35,6 +37,9 @@ public class Handler
             if (resource.charAt(0) == ' ')
                 resource = "/ HTTP/1.1";
 
+            // ==============================
+            // Write request to origin server
+            // ==============================
             // Create a socket for the origin server
             originSocket = new Socket(originHost, 80);
             
@@ -45,7 +50,9 @@ public class Handler
             dataOut.writeBytes(request);
             dataOut.flush();
 
+            // ============================================================
             // Read response back from origin server and write it to client
+            // ============================================================
             bufferedIn = new BufferedInputStream(originSocket.getInputStream());
             bufferedOut = new BufferedOutputStream(clientSocket.getOutputStream());
             byte[] buffer = new byte[4096];
