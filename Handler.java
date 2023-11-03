@@ -22,10 +22,14 @@ public class Handler
             // Read and parse the client request
             fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientRequest = fromClient.readLine();
-            System.out.println(clientRequest);
+            
+            // This is a special case where the request is for a favicon with no host name
+            // Handling this would add more complexity than it's worth
+            if (clientRequest.equals("GET /favicon.ico HTTP/1.1"))
+                return;
+
             String originHost = clientRequest.split("/")[1].split(" ")[0];
             String resource = clientRequest.split(originHost)[1];
-            //System.out.println(resource);
             
             // If we're requesting default documents
             if (resource.charAt(0) == ' ')
@@ -58,12 +62,18 @@ public class Handler
             System.out.println(ioe);
         }
         finally {
-            fromClient.close();
-            originSocket.close();
-            dataOut.close();
-            bufferedIn.close();
-            bufferedOut.close();
-            clientSocket.close();
+            if (fromClient != null)
+                fromClient.close();
+            if (originSocket != null)
+                originSocket.close();
+            if (dataOut != null)
+                dataOut.close();
+            if (bufferedIn != null)
+                bufferedIn.close();
+            if (bufferedOut != null)
+                bufferedOut.close();
+            if (clientSocket != null)
+                clientSocket.close();
         }
     }
 }
