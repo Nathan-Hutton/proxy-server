@@ -3,8 +3,6 @@ import java.net.*;
 
 public class Handler
 {
-    public static final int BUFFER_SIZE = 256;
-
     // This is invoked by a different thread
     public void process(Socket clientSocket) throws java.io.IOException {
         // For reading from client
